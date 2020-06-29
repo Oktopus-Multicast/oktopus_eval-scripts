@@ -10,7 +10,7 @@ from utils import redirect_stdout
 from oktopus.dataset import ensure_dir
 from okdatasetgen.commands import GetDataset
 
-from ..eval_param import *
+from . import *
 
 def _generate_dataset_files(isp_topo_resources_file, out_dir, sessions_count, receivers_per, bandwidth_per):
     dataset_out = os.path.join(out_dir, 'dataset.log')

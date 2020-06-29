@@ -10,7 +10,7 @@ from utils import redirect_stdout
 from oktopus.dataset import ensure_dir
 from okdatasetgen.commands import GetDatasetSfc
 
-from ..eval_param import *
+from . import *
 
 def _generate_sfc_dataset_files(params):
     topo_name = params.get("topo_name", "")

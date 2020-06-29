@@ -10,7 +10,7 @@ from utils import redirect_stdout
 
 from oktopus.dataset import ensure_dir
 
-from ..eval_param import *
+from . import *
 from multiprocessing import Pool, cpu_count
 
 def _generate_solutions_sfc(date, csv_name, exp_id, dataset_dir, app, topo_name, graph_path, input_dir, sessions_count, algorithm_name, objective, sfc_len, per_ser, ord_type, aux_ser_avail_p, receivers_per, bandwidth_per):

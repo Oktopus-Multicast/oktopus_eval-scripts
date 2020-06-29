@@ -7,7 +7,7 @@ from sciplot import  DEFAULT_RC
 
 from oktopus.dataset import ensure_dir
 
-from ..eval_param import REPRE_SAMPLE
+from . import REPRE_SAMPLE
 
 from base import Base # cli
 
