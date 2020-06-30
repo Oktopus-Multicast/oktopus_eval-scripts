@@ -8,16 +8,17 @@ with open("README.md", "r") as fh:
 setup(
     name = 'oktopus_evaluation',
     version = __version__,
-    author="Example Author",
-    author_email="author@example.com",
+    author='Khaled Diab, Carlos Lee',
+    author_email='kdiab@sfu.ca, carlosl@sfu.ca',
     description = 'Oktopus evaluation.',
     long_description = long_description,
-    long_description_content_type="text/markdown",
-    url = 'https://cs-git-research.cs.surrey.sfu.ca/nsl/ISP/oktopus/eval-scripts',
+    long_description_content_type='text/markdown',
+    url = 'https://github.com/Oktopus-Multicast/oktopus_eval-scripts.git',
     packages=['okevaluation'],
     classifiers = [
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
+        'License :: OSI Approved :: MIT License'
     ],
     entry_points = {
         'console_scripts': [

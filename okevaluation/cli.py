@@ -33,7 +33,7 @@ Examples:
 
 Help:
   For help using this tool, please open an issue on the Github repository:
-  https://cs-git-research.cs.surrey.sfu.ca/nsl/ISP/oktopus/eval-scripts
+  https://github.com/Oktopus-Multicast/oktopus_eval-scripts.git
 """
  
  
