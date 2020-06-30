@@ -7,15 +7,15 @@ This repository contain scripts to run the evaluation experiments of Oktopus.
 
 First, download this repository and install the requirements of the Oktopus Evaluation Scripts by running:
 
-    git clone https://github.com/charlee593/oktopus_eval-scripts.git
+    git clone https://github.com/oktopus-multicast/oktopus_eval-scripts.git
     cd oktopus_eval-scripts
     pip install -r requirements.txt
 
-Then, you need to install the Oktopus Framework module which can be found in this [link](https://github.com/charlee593/oktopus_framework.git). Replace the `oktopus-framework-module-dir` line of the following command to the location, where the downloaded Oktopus Framework module directory is located. Then run the following command to install the module.
+Then, you need to install the Oktopus Framework module which can be found in this [link](https://github.com/oktopus-multicast/oktopus_framework.git). Replace the `oktopus-framework-module-dir` line of the following command to the location, where the downloaded Oktopus Framework module directory is located. Then run the following command to install the module.
 
     pip install -e oktopus-framework-module-dir
 
-Afterward install the [Oktopus Dataset Generator module](https://github.com/charlee593/oktopus_dataset-gen.git) using similar steps. 
+Afterward install the [Oktopus Dataset Generator module](https://github.com/oktopus-multicast/oktopus_dataset-gen.git) using similar steps. 
 
     pip install -e oktopus-dataset-gen-module-dir
 
@@ -62,7 +62,7 @@ Options:
 
 ## Experiment Control Parameters
 
-The commands uses default parameters found in this [file](https://github.com/charlee593/oktopus_eval-scripts/blob/master/okevaluation/commands/__init__.py) of the repository.
+The commands uses default parameters found in this [file](https://github.com/oktopus-multicast/oktopus_eval-scripts/blob/master/okevaluation/commands/__init__.py) of the repository.
 
 ## Commands
 
