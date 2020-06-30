@@ -216,7 +216,7 @@ class CreatePlot(Base):
                                 data['costs'] = cost
 
                             except Exception as e:
-                                print e
+                                print "Check new format output location:"
 
                             if len(data['num_links']) == 0:
                                 try:
@@ -302,7 +302,7 @@ class CreatePlot(Base):
                                 y_range = [20, 80]
 
                         if param_key == 'num_sessions':
-                            x_range = [1000, 4000]
+                            x_range = [min(xs[0]), max(xs[0])]
                             if max(xs[0]) < 4000:
                                 x_range = [0, 1000]
                         else:

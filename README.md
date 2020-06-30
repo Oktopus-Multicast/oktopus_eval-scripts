@@ -1,159 +1,127 @@
-#  Oktopus' Performance Evaluation
-In the current directory, there is a script, "ramese_script.sh", to run service chain app in ramses. The script will generate the dataset, run the application, and plot the charts. 
-Before running the script, there are a couple variables to be set in the script. 
+# Oktopus Evaluation Scripts
 
-TEST_DIR - The directory where the dataset will be generated.
 
-CSV_FILENAME - The name of the csv file, where the data will be logged.
+This repository contain scripts to run the evaluation experiments of Oktopus.
 
-CHART_DIR - The directory where the charts will be generated.
+## Install
 
-After the setting the variables, run:
+First, download this repository and install the requirements of the Oktopus Evaluation Scripts by running:
 
-    ./ramses_script.sh
-    
-To configure the control parameters, change the following variables in the "parallel_run_distributed.py" file.
+    git clone https://github.com/charlee593/oktopus_eval-scripts.git
+    cd oktopus_eval-scripts
+    pip install -r requirements.txt
 
-EXP_MCAST_SESSIONS - the array of the number of sessions.
+Then, you need to install the Oktopus Framework module which can be found in this [link](https://github.com/charlee593/oktopus_framework.git). Replace the `oktopus-framework-module-dir` line of the following command to the location, where the downloaded Oktopus Framework module directory is located. Then run the following command to install the module.
 
-PER_SESSIONS_WITH_SFC - the array of the percentage of sessions with the service chain.
+    pip install -e oktopus-framework-module-dir
 
-LENGTH_SER_CHAIN - the array of the length of the service chain.
+Afterward install the [Oktopus Dataset Generator module](https://github.com/charlee593/oktopus_dataset-gen.git) using similar steps. 
 
-ORD_TYPE - the array of the order type of service chain.
+    pip install -e oktopus-dataset-gen-module-dir
 
-AUXILIARY_SER_AVAIL_P - the array of the percentage of auxiliary service function deployed.
+Finally, install the Oktopus Evaluation Scripts module by running:
 
-## Create Evaluation Plot
+    pip install -e .
 
-The create_plot file creates the plots from the csv files and the data files.
+## Usage
 
-    python create_plot.py sc --csv <csv_file> --dir <dir> [-o <output_dir>] 
+Oktopus Evaluation Scripts contain a set of commands which can be view by running:
 
-  -- csv (CSV File): The CSV log file.
-  --dir (Data directory): The data directory is where the logs are created.
-  -o (Output directory): The directory that the plots will be created.
+    okevaluation -h
+
+It should output:
+
+```
+okevaluation
+
+Usage:
+  okevaluation generate_res  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--link_bw_cap=<link_bw_cap>] [--medium=<medium>]  
+  okevaluation generate_dataset  -o <output_dir>   --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]
+  okevaluation generate_sfc  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--num_cpus=<num_cpus>] 
+  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
+  okevaluation create_plot --csv <csv_file> --dir <dir> -o <output_dir>
+
+Arguments:
+  -o <output_dir>                    Output directory                         
+  --topology=<isp_topology>          ISP topology (without resources)          
+  --link_bw_cap=<link_bw_cap>        Link bandwidth capacity                   [default: 10000]
+  --medium=<medium>                  Medium of the link                        [default: copper]
+  --num_cpus=<num_cpus>              Number of parallel tasks                  [default: inf]
+  --topo_run=<topo_run>              Choose a topology                         
+  --csv_name=<csv_name>              csv file name                             [default: date]
   
- ### Allocation Experiments
-Change the REPRE_SAMPLE variable in create_plot file to the following.
-
-    REPRE_SAMPLE = {'num_sessions':{'num_sessions': True, 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'service_chain_len':{'num_sessions': [4000], 
-                            'service_chain_len': True, 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'percentage_sessions_with_services':{'num_sessions': [4000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':True, 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'chain_order_type':{'num_sessions': [4000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':True, 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'receivers_per':{'num_sessions': [4000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':True, 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'bandwidth_per':{'num_sessions': [4000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':True, 
-                            'aux_ser_avail_p':[0.25]},
-                    'aux_ser_avail_p':{'num_sessions': [4000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':True},
-    }
-    
-Run the following command:
-
-    python create_plot.py sc --csv output/iptv_all.csv --dir /NSL/nsl-data/carlosl_data/oktopus/iptv/ -o <output_dir>
-    
- - /NSL/nsl-data/carlosl_data/oktopus/iptv/ is the location of the data in the NSL storage.
- - <output_dir> is the location where the plots are generated.
+  --csv <csv_file>    CSV File
+  --dir <dir>         Data directory
+  
+Options:
+  -h --help     Displays this message
+  -v --version  Displays script version
 
 
- ### Objective Optimization Experiments
-Change the REPRE_SAMPLE variable in create_plot file to the following.
+```
 
-    REPRE_SAMPLE = {'num_sessions':{'num_sessions': True, 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'service_chain_len':{'num_sessions': [1000], 
-                            'service_chain_len': True, 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'percentage_sessions_with_services':{'num_sessions': [1000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':True, 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'chain_order_type':{'num_sessions': [1000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':True, 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'receivers_per':{'num_sessions': [1000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':True, 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':[0.25]},
-                    'bandwidth_per':{'num_sessions': [1000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':True, 
-                            'aux_ser_avail_p':[0.25]},
-                    'aux_ser_avail_p':{'num_sessions': [1000], 
-                            'service_chain_len': ['variable'], 
-                            'percentage_sessions_with_services':[100], 
-                            'chain_order_type':[1], 
-                            'receivers_per':['variable'], 
-                            'bandwidth_per':['variable'], 
-                            'aux_ser_avail_p':True},
-    }
-    
-Run the following command:
+## Experiment Control Parameters
 
-    python create_plot.py sc --csv output/vod.csv --dir /NSL/nsl-data/carlosl_data/oktopus/vod/ -o <output_dir>
-    
- - /NSL/nsl-data/carlosl_data/oktopus/vod/ is the location of the data in the NSL storage.
- - <output_dir> is the location where the plots are generated.
- 
+The commands uses default parameters found in this [file](https://github.com/charlee593/oktopus_eval-scripts/blob/master/okevaluation/commands/__init__.py) of the repository.
+
+## Commands
+
+* ###  okevaluation generate_res
+
+   It generates the ISP files for the experiment.
+
+   Example:
+
+  ```bash
+  okevaluation generate_res  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  ```
+
+  Given the specified `AttMpls` topology and the `oktopus_dataset-gen/data/topology_zoo/` directory, where it stores the Internet Topology Zoon AttMpls graphml file. It generates a AttMpls ISP graph file in `example/` with the given control parameter link capacity.
+
+* ###  okevaluation generate_dataset
+
+   It generates the multicast sessions for the experiment.
+
+   Example:
+
+  ```bash
+  okevaluation generate_dataset  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  ```
+
+  Given the specified `AttMpls` topology and the `oktopus_dataset-gen/data/topology_zoo/` directory, where it stores the Internet Topology Zoon AttMpls graphml file. It generates CSV files containing the multicast sessions in `example/` directory.
+
+* ###  okevaluation generate_sfc
+
+   It generates the service chain requirement for the multicast sessions for the experiment.
+
+   Example:
+
+  ```bash
+  okevaluation generate_sfc  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  ```
+
+  Given the specified `AttMpls` topology and the `oktopus_dataset-gen/data/topology_zoo/` directory, where it stores the Internet Topology Zoon AttMpls graphml file. It generates CSV files containing the service chain for the multicast sessions in `example/` directory.
+
+* ###  okevaluation run_sfc
+
+   It generates the results of the experiment.
+
+   Example:
+
+  ```bash
+  okevaluation run_sfc  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  ```
+
+  Given the specified `AttMpls` topology and the `oktopus_dataset-gen/data/topology_zoo/` directory, where it stores the Internet Topology Zoon AttMpls graphml file. It generates the results of the experiment in `example/` directory and it output a summary of the results in CSV format under the `output` directory of the current path.
+
+* ###  okevaluation create_plot
+
+   It generates the plot of the experiment results.
+
+   Example:
+
+  ```bash
+  okevaluation create_plot --csv=output/data_2020y_6m_29d_17h_5m_1s.csv --dir=example/ -o example/plot
+  ```
+
+  Given the summary result file `output/data_2020y_6m_29d_17h_5m_1s.csv` and results directory `example/`. It generates plots of the results in the `example/plot` directory.

@@ -2,10 +2,10 @@
 okevaluation
 
 Usage:
-  okevaluation generate_res  -o <output_dir>  [--topology=<topologies_dir>]  [--link_bw_cap=<link_bw_cap>] [--medium=<medium>]  [--topo_run=<topo_run>]
-  okevaluation generate_dataset  -o <output_dir>   [--topology=<topologies_dir>] [--num_cpus=<num_cpus>] [--topo_run=<topo_run>]
-  okevaluation generate_sfc  -o <output_dir>  [--topology=<topologies_dir>]   [--num_cpus=<num_cpus>] [--topo_run=<topo_run>]
-  okevaluation run_sfc -o <output_dir>  [--topology=<topologies_dir>] [--num_cpus=<num_cpus>] [--topo_run=<topo_run>] [--csv_name=<csv_name>]
+  okevaluation generate_res  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--link_bw_cap=<link_bw_cap>] [--medium=<medium>]  
+  okevaluation generate_dataset  -o <output_dir>   --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]
+  okevaluation generate_sfc  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--num_cpus=<num_cpus>] 
+  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
   okevaluation create_plot --csv <csv_file> --dir <dir> -o <output_dir>
 
 Arguments:
@@ -25,7 +25,11 @@ Options:
   -v --version  Displays script version
 
 Examples:
-  okevaluation hello
+  okevaluation generate_res  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  okevaluation generate_dataset  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  okevaluation generate_sfc  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  okevaluation run_sfc  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  okevaluation create_plot --csv=output/data_2020y_6m_29d_17h_5m_1s.csv --dir=example/ -o example/plot
 
 Help:
   For help using this tool, please open an issue on the Github repository:
