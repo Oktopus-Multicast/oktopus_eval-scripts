@@ -5,21 +5,7 @@ This repository contain scripts to run the evaluation experiments of Oktopus.
 
 ## Install
 
-First, download this repository and install the requirements of the Oktopus Evaluation Scripts by running:
-
-    git clone https://github.com/oktopus-multicast/oktopus_eval-scripts.git
-    cd oktopus_eval-scripts
-    pip install -r requirements.txt
-
-Then, you need to install the Oktopus Framework module which can be found in this [link](https://github.com/oktopus-multicast/oktopus_framework.git). Replace the `oktopus-framework-module-dir` line of the following command to the location, where the downloaded Oktopus Framework module directory is located. Then run the following command to install the module.
-
-    pip install -e oktopus-framework-module-dir
-
-Afterward install the [Oktopus Dataset Generator module](https://github.com/oktopus-multicast/oktopus_dataset-gen.git) using similar steps. 
-
-    pip install -e oktopus-dataset-gen-module-dir
-
-Finally, install the Oktopus Evaluation Scripts module by running:
+Install the Oktopus Evaluation Scripts module by running:
 
     pip install -e .
 
