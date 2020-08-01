@@ -24,7 +24,7 @@ Usage:
   okevaluation generate_res  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--link_bw_cap=<link_bw_cap>] [--medium=<medium>]  
   okevaluation generate_dataset  -o <output_dir>   --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]
   okevaluation generate_sfc  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--num_cpus=<num_cpus>] 
-  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
+  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
   okevaluation create_plot --csv <csv_file> --dir <dir> -o <output_dir>
 
 Arguments:
@@ -95,10 +95,10 @@ The commands uses default parameters found in this [file](https://github.com/okt
    Example:
 
   ```bash
-  okevaluation run_sfc  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/ --topo_run=AttMpls
+  okevaluation run_sfc  -o example/ --topology=oktopus_dataset-gen/data/topology_zoo/
   ```
 
-  Given the specified `AttMpls` topology and the `oktopus_dataset-gen/data/topology_zoo/` directory, where it stores the Internet Topology Zoon AttMpls graphml file. It generates the results of the experiment in `example/` directory and it output a summary of the results in CSV format under the `output` directory of the current path.
+  Given the specified control parameters in the setting [file](https://github.com/oktopus-multicast/oktopus_eval-scripts/blob/master/okevaluation/commands/__init__.py) and the `oktopus_dataset-gen/data/topology_zoo/` directory, where it stores the Internet Topology Zoo graphml file. It generates the results of the experiment in `example/` directory and it output a summary of the results in CSV format under the `output` directory of the current path.
 
 * ###  okevaluation create_plot
 

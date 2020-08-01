@@ -5,7 +5,7 @@ Usage:
   okevaluation generate_res  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--link_bw_cap=<link_bw_cap>] [--medium=<medium>]  
   okevaluation generate_dataset  -o <output_dir>   --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]
   okevaluation generate_sfc  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--num_cpus=<num_cpus>] 
-  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
+  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> [--topo_run=<topo_run>] [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
   okevaluation create_plot --csv <csv_file> --dir <dir> -o <output_dir>
 
 Arguments:

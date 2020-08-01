@@ -1,9 +1,9 @@
 """The dataset command."""
 
-import os, itertools, time, re, csv, subprocess
+import os, itertools, time, re, csv, subprocess, copy
 
 from math import ceil
-
+from collections import OrderedDict 
 
 from base import Base # cli
 from utils import redirect_stdout
@@ -66,7 +66,6 @@ class RunSFC(Base):
     def run(self):
         output_dir = self.options.get('-o', None)
         num_cpus = float(self.options.get('--num_cpus', None))
-        topo_run = self.options.get('--topo_run', None)
         csv_name = self.options.get('--csv_name', None)
 
         date = 'data_%sy_%sm_%sd_%sh_%sm_%ss' % (time.localtime().tm_year, time.localtime().tm_mon, time.localtime().tm_mday, time.localtime().tm_hour, time.localtime().tm_min, time.localtime().tm_sec)
@@ -88,19 +87,43 @@ class RunSFC(Base):
 
         results = []
 
-        for topo_name in [topo_run]:
+        crl_param = OrderedDict()
+        crl_param['num_sessions']  = EXP_MCAST_SESSIONS
+        crl_param['service_chain_len'] = LENGTH_SER_CHAIN
+        crl_param['percentage_sessions_with_services'] = PER_SESSIONS_WITH_SFC
+        crl_param['chain_order_type'] = ORD_TYPE
+        crl_param['receivers_per'] = EXP_MCAST_REC
+        crl_param['bandwidth_per'] = EXP_MCAST_BW
+        crl_param['aux_ser_avail_p'] = AUXILIARY_SER_AVAIL_P
+
+        # param for all repre sample experiment
+        for topo_name, exp_idx, app, objective, algo in itertools.product(TOPO, EXPS, SDN_APP, OBJECTIVES, ALGORITHMS):
             output_topo_dir = os.path.join(output_dir, topo_name)
             ensure_dir(output_topo_dir)
 
-            for control_params in itertools.product(OBJECTIVES, LENGTH_SER_CHAIN, PER_SESSIONS_WITH_SFC, ORD_TYPE, AUXILIARY_SER_AVAIL_P, EXP_MCAST_SESSIONS, ALGORITHMS, EXPS, EXP_MCAST_REC, EXP_MCAST_BW, SDN_APP):
-                objective, sfc_len, per_ser, ord_type, aux_ser_avail_p, session_count, algo, exp_idx, recs, bw, app = control_params
-                res_file = os.path.join(output_topo_dir, topo_name + '_resources.graphml')
-                exp_id = 'exp_%s' % str(exp_idx + 1)
-                exp_dir = os.path.join(output_topo_dir, str(session_count), str(recs), str(bw), exp_id,  'service_chain', str(sfc_len), str(per_ser), str(ord_type), str(aux_ser_avail_p))
-                ensure_dir(exp_dir)
-                result = pool.apply_async(_generate_solutions_sfc, args=(date, csv_name, exp_idx+1, exp_dir, app, topo_name, res_file, exp_dir, session_count, algo, objective, sfc_len, per_ser, ord_type, aux_ser_avail_p, recs, bw))
-                print("Submitted %s-%s-%s-%s-%s-%s-%s tasks to pool" % (topo_name, algo, str(session_count), objective, str(sfc_len), str(ord_type), str(aux_ser_avail_p)))
-                results.append(result)
+            # control param
+            cp_repre = copy.deepcopy(crl_param)
+            for repre_k, repre_v in REPRE_SAMPLE.items():
+                for sample_k, sample_v in repre_v.items():
+                    if repre_k != sample_k:
+                        cp_repre[sample_k] = sample_v
+                
+                # check topo
+                if topo_name not in repre_v['topo']:
+                    continue
+                
+                # fix the rest of control param
+                for param_combi in itertools.product(*cp_repre.values()):
+                    session_count, sfc_len, per_ser, ord_type, recs, bw, aux_ser_avail_p, _ = param_combi
+                    res_file = os.path.join(output_topo_dir, topo_name + '_resources.graphml')
+                    exp_id = 'exp_%s' % str(exp_idx + 1)
+                    exp_dir = os.path.join(output_topo_dir,  str(session_count), str(recs), str(bw),  exp_id,  'service_chain', str(sfc_len), str(per_ser), str(ord_type), str(aux_ser_avail_p))
+                    ensure_dir(exp_dir)
+                    result = pool.apply_async(_generate_solutions_sfc, args=(date, csv_name, exp_idx+1, exp_dir, app, topo_name, res_file, exp_dir, session_count, algo, objective, sfc_len, per_ser, ord_type, aux_ser_avail_p, recs, bw))
+                    print("Submitted {}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{} tasks to pool".format(topo_name, exp_idx, app, objective, algo, session_count, sfc_len, per_ser, ord_type, recs, bw, aux_ser_avail_p))
+                    results.append(result)
+
+            break
 
         results = [r.get() for r in results]
         pool.close()
