@@ -67,6 +67,7 @@ class RunSFC(Base):
         output_dir = self.options.get('-o', None)
         num_cpus = float(self.options.get('--num_cpus', None))
         csv_name = self.options.get('--csv_name', None)
+        is_repre = self.options.get('-s', False)
 
         date = 'data_%sy_%sm_%sd_%sh_%sm_%ss' % (time.localtime().tm_year, time.localtime().tm_mon, time.localtime().tm_mday, time.localtime().tm_hour, time.localtime().tm_min, time.localtime().tm_sec)
 
@@ -104,26 +105,37 @@ class RunSFC(Base):
             # control param
             cp_repre = copy.deepcopy(crl_param)
             for repre_k, repre_v in REPRE_SAMPLE.items():
-                for sample_k, sample_v in repre_v.items():
-                    if repre_k != sample_k:
-                        cp_repre[sample_k] = sample_v
-                
-                # check topo
-                if topo_name not in repre_v['topo']:
-                    continue
+
+                if is_repre:
+                    # assign repre sample ctrl param
+                    for sample_k, sample_v in repre_v.items():
+                        if sample_k == 'topo':
+                            continue
+                        if repre_k != sample_k:
+                            cp_repre[sample_k] = sample_v
+                    
+                    # check topo
+                    if topo_name not in repre_v['topo']:
+                        continue
                 
                 # fix the rest of control param
                 for param_combi in itertools.product(*cp_repre.values()):
-                    session_count, sfc_len, per_ser, ord_type, recs, bw, aux_ser_avail_p, _ = param_combi
+                    session_count, sfc_len, per_ser, ord_type, recs, bw, aux_ser_avail_p = param_combi
                     res_file = os.path.join(output_topo_dir, topo_name + '_resources.graphml')
                     exp_id = 'exp_%s' % str(exp_idx + 1)
                     exp_dir = os.path.join(output_topo_dir,  str(session_count), str(recs), str(bw),  exp_id,  'service_chain', str(sfc_len), str(per_ser), str(ord_type), str(aux_ser_avail_p))
+                                    
+                    if not is_repre:
+                        if not os.path.isdir(exp_dir):
+                            continue # run only existing dataset input
+
                     ensure_dir(exp_dir)
                     result = pool.apply_async(_generate_solutions_sfc, args=(date, csv_name, exp_idx+1, exp_dir, app, topo_name, res_file, exp_dir, session_count, algo, objective, sfc_len, per_ser, ord_type, aux_ser_avail_p, recs, bw))
                     print("Submitted {}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{} tasks to pool".format(topo_name, exp_idx, app, objective, algo, session_count, sfc_len, per_ser, ord_type, recs, bw, aux_ser_avail_p))
                     results.append(result)
 
-            break
+                if not is_repre:
+                    break # if not repre, one loop has all combination
 
         results = [r.get() for r in results]
         pool.close()

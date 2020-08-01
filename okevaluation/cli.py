@@ -5,11 +5,12 @@ Usage:
   okevaluation generate_res  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--link_bw_cap=<link_bw_cap>] [--medium=<medium>]  
   okevaluation generate_dataset  -o <output_dir>   --topology=<topologies_dir> --topo_run=<topo_run> [--num_cpus=<num_cpus>]
   okevaluation generate_sfc  -o <output_dir>  --topology=<topologies_dir>  --topo_run=<topo_run> [--num_cpus=<num_cpus>] 
-  okevaluation run_sfc -o <output_dir>  --topology=<topologies_dir> [--topo_run=<topo_run>] [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
+  okevaluation run_sfc [-s] -o <output_dir>  --topology=<topologies_dir>  [--topo_run=<topo_run>] [--num_cpus=<num_cpus>]  [--csv_name=<csv_name>]
   okevaluation create_plot --csv <csv_file> --dir <dir> -o <output_dir>
 
 Arguments:
-  -o <output_dir>                    Output directory                         
+  -o <output_dir>                    Output directory         
+  -s                                 Run the representative sample experiment                
   --topology=<isp_topology>          ISP topology (without resources)          
   --link_bw_cap=<link_bw_cap>        Link bandwidth capacity                   [default: 10000]
   --medium=<medium>                  Medium of the link                        [default: copper]
